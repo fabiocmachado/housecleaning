@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/db";
 
-export default sequelize.define("costumer", {
+export default sequelize.define("customer", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

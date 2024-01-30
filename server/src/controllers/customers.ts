@@ -1,16 +1,20 @@
 import { Identifier, Model } from "sequelize";
-import costumerModel from "../models/costumer.model";
+import customerModel from "../models/customers.model";
 
 function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
-    costumerModel.findAll().then((result) => res.json(result));
+  customerModel.findAll().then((result) => res.json(result));
   }
   
-  function findClient(req: { params: { id: Identifier | undefined; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
-    costumerModel.findByPk(req.params.id).then((result) => res.json(result));
+  function findClientByiD(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+    customerModel.findByPk(req.params.id).then((result) => res.json(result));
+  }
+
+  function findClientByName(req: { params: { name: string; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+    customerModel.findOne({where: {name: req.params.name}}).then((result) => res.json(result));
   }
   
   function addClient(req: { body: { name: string; email: string; phone: string }; }, res: { json: (arg0: Model<any, any>) => any; }) {
-    costumerModel.create({
+    customerModel.create({
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone
@@ -18,7 +22,7 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
   }
   
   async function updateClient(req: { body: { name: string; email: string; phone: string }; params: { id: Identifier | undefined; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
-    await costumerModel.update(
+    await customerModel.update(
       {
         nome: req.body.name,
         email: req.body.email,
@@ -31,17 +35,17 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
       }
     );
   
-    costumerModel.findByPk(req.params.id).then((result) => res.json(result));
+    customerModel.findByPk(req.params.id).then((result) => res.json(result));
   }
   
   async function deleteClient(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any>[]) => any; }) {
-    await costumerModel.destroy({
+    await customerModel.destroy({
       where: {
         id: req.params.id,
       },
     });
   
-    costumerModel.findAll().then((result) => res.json(result));
+    customerModel.findAll().then((result) => res.json(result));
   }
   
-  export default { findAll, addClient, findClient, updateClient, deleteClient };
+  export default { findAll, addClient, findClientByiD, findClientByName, updateClient, deleteClient };
