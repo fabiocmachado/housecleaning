@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/db";
 
-export default sequelize.define("customer", {
+const Customer = sequelize.define("customer", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -22,4 +22,14 @@ export default sequelize.define("customer", {
     allowNull: false,
     unique: true,
   },
+  coordinateX: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  coordinateY: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
 });
+
+export default Customer;

@@ -5,15 +5,26 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
   customerModel.findAll().then((result) => res.json(result));
   }
   
-  function findClientByiD(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+  function findCustomerByiD(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
     customerModel.findByPk(req.params.id).then((result) => res.json(result));
   }
 
-  function findClientByName(req: { params: { name: string; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
-    customerModel.findOne({where: {name: req.params.name}}).then((result) => res.json(result));
+  function findCustomerByName(req: { query: { name: string }; }, res: { json: (arg0: Model<any, any>[]) => any; }) {
+    const name = req.query.name;
+    customerModel.findAll({ where: { name } }).then((result) => res.json(result));
+  }
+
+  function findCustomerByEmail(req: { query: { email: string; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+    const email = req.query.email;
+    customerModel.findOne({ where: { email }}).then((result) => res.json(result));
+  }
+
+  function findCustomerByPhone(req: { query: { phone: string; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+    const phone = req.query.phone;
+    customerModel.findOne({ where: { phone }}).then((result) => res.json(result));
   }
   
-  function addClient(req: { body: { name: string; email: string; phone: string }; }, res: { json: (arg0: Model<any, any>) => any; }) {
+  function addCustomer(req: { body: { name: string; email: string; phone: string }; }, res: { json: (arg0: Model<any, any>) => any; }) {
     customerModel.create({
       name: req.body.name,
       email: req.body.email,
@@ -21,10 +32,10 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
     }).then((result) => res.json(result));
   }
   
-  async function updateClient(req: { body: { name: string; email: string; phone: string }; params: { id: Identifier | undefined; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+  async function updateCustomer(req: { body: { name: string; email: string; phone: string }; params: { id: Identifier | undefined; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
     await customerModel.update(
       {
-        nome: req.body.name,
+        name: req.body.name,
         email: req.body.email,
         phone: req.body.phone
       },
@@ -38,7 +49,7 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
     customerModel.findByPk(req.params.id).then((result) => res.json(result));
   }
   
-  async function deleteClient(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any>[]) => any; }) {
+  async function deleteCustomer(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any>[]) => any; }) {
     await customerModel.destroy({
       where: {
         id: req.params.id,
@@ -48,4 +59,4 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
     customerModel.findAll().then((result) => res.json(result));
   }
   
-  export default { findAll, addClient, findClientByiD, findClientByName, updateClient, deleteClient };
+  export default { findAll, addCustomer, findCustomerByName, findCustomerByEmail, findCustomerByiD, findCustomerByPhone, updateCustomer, deleteCustomer };
