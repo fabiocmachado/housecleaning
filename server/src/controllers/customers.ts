@@ -5,14 +5,17 @@ function findAll(req: any, res: { json: (arg0: Model<any, any>[]) => any; }) {
   customerModel.findAll().then((result) => res.json(result));
   }
   
-  function findCustomerByiD(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
-    customerModel.findByPk(req.params.id).then((result) => res.json(result));
+function findCustomerByiD(req: { params: { id: Identifier; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
+  customerModel.findByPk(req.params.id).then((result) => res.json(result));
   }
 
-  function findCustomerByName(req: { query: { name: string }; }, res: { json: (arg0: Model<any, any>[]) => any; }) {
+  function findCustomerByName(req: { query: { name: string; }; }, res: { json: (arg0: Model<any, any>[]) => void; }) {
     const name = req.query.name;
-    customerModel.findAll({ where: { name } }).then((result) => res.json(result));
+    customerModel.findAll({ where: { name } }).then((customers) => {
+      res.json(customers);
+    });
   }
+
 
   function findCustomerByEmail(req: { query: { email: string; }; }, res: { json: (arg0: Model<any, any> | null) => any; }) {
     const email = req.query.email;
